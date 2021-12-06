@@ -33,3 +33,12 @@ content-type: application/json
 {
     "name": "John Doe"
 }
+
+###
+POST http://localhost:3001/api/persons/
+content-type: application/json
+
+{
+    "name": "Hello WORLD",
+    "number": ""
+}
