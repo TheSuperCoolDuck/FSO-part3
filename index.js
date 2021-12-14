@@ -22,16 +22,17 @@ app.get('/api/persons', (request, response)=>{
 })
 
 app.get('/info', (request, response)=>{
-    const numPersons = persons.length
-    const time = new Date()
-
-    response.send(`<div><p>Phonebook has info for ${numPersons} people</p><p>${time}</p></div>`)
+    Person.count({})
+        .then(count=>{
+            const time = new Date()
+            response.send(`<div><p>Phonebook has info for ${count} people</p><p>${time}</p></div>`)
+        })
 })
 
 app.get('/api/persons/:id', (request, response, next)=>{
     Person.findById(request.params.id)
         .then(person=>{
-            if(note){
+            if(person){
                 response.json(person)
             } else {
                 response.status(404).end()
