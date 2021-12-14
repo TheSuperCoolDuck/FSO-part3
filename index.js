@@ -4,6 +4,7 @@ const { response } = require('express')
 const cors = require('cors')
 const express = require('express')
 const morgan = require('morgan')
+const req = require('express/lib/request')
 
 morgan.token('body', (request, response) => JSON.stringify(request.body));
 
@@ -43,6 +44,21 @@ app.delete('/api/persons/:id', (request,response, next)=>{
     Person.findByIdAndRemove(request.params.id)
         .then(result=>{
             response.status(204).end()
+        })
+        .catch(error=>next(error))
+})
+
+app.put('/api/persons/:id', (request, response, next)=>{
+    const body = request.body
+
+    const person = {
+        name: body.name,
+        number: body.number,
+    }
+    
+    Person.findByIdAndUpdate(request.params.id, person, {new:true})
+        .then(updatedPerson=>{
+            response.json(updatedPerson)
         })
         .catch(error=>next(error))
 })

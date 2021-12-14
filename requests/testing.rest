@@ -1,4 +1,4 @@
-DELETE http://localhost:3001/api/persons/1
+DELETE http://localhost:3001/api/persons/61b6f888cbace4f7d3c706c0
 
 ###
 POST http://localhost:3001/api/persons/
@@ -6,6 +6,15 @@ content-type: application/json
 
 {
     "name": "John Doe",
+    "number": "0987-654-321"
+}
+
+###
+PUT http://localhost:3001/api/persons/61b6f7b1ffdca59614d68826
+content-type: application/json
+
+{
+    "name": "world",
     "number": "0987-654-321"
 }
 
