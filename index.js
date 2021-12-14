@@ -28,15 +28,17 @@ app.get('/info', (request, response)=>{
 })
 
 app.get('/api/persons/:id', (request, response)=>{
-    Person.findById(request.params.id).then(person=>{
-        response.json(person)
-    })
+    Person.findById(request.params.id)
+        .then(person=>{
+            response.json(person)
+        })
 })
 
 app.delete('/api/persons/:id', (request,response)=>{
-    const id = Number(request.params.id)
-    persons = persons.filter(p=>p.id!==id)
-    response.status(204).end()
+    Person.findByIdAndRemove(request.params.id)
+        .then(result=>{
+            response.status(204).end()
+        })
 })
 
 app.post('/api/persons',(request,response)=>{
