@@ -64,9 +64,20 @@ app.put('/api/persons/:id', (request, response, next)=>{
         .catch(error=>next(error))
 })
 
-app.post('/api/persons',(request,response)=>{
+app.post('/api/persons',(request,response,next)=>{
 
     const body = request.body
+
+    const person = new Person({
+        name: body.name,
+        number: body.number,
+        date: new Date(),
+    })
+
+    person.save().then(savedPerson=>{
+        response.json(savedPerson)
+    })
+    .catch(error=>next(error))
     
     if(body.name==undefined){
         return response.status(400).json({
@@ -77,15 +88,7 @@ app.post('/api/persons',(request,response)=>{
             error:'number missing'
         })
     } else {
-        const person = new Person({
-            name: body.name,
-            number: body.number,
-            date: new Date(),
-        })
-
-        person.save().then(savedPerson=>{
-            response.json(savedPerson)
-        })
+        
     }
 })
 
@@ -100,6 +103,9 @@ const errorHandler = (error, request, response, next)=>{
 
     if(error.name==='CastError'){
         return response.status(400).send({error: 'malformatted id'})
+    }
+    if(error.name==="MongoServerError"){
+        return response.status(400).send({error:'name is not unique'})
     }
 
 
